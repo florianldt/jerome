@@ -4,8 +4,11 @@
     "description": "Auto localization for iOS",
     "main": "dist/index.js",
     "scripts": {
-        "test": "jest",
-        "prepare": "husky install"
+        "format": "prettier --write '**/*.ts'",
+        "lint": "eslint src/**/*.ts",
+        "prepare": "husky install",
+        "start": "nodemon",
+        "test": "jest"
     },
     "repository": {
         "type": "git",
