@@ -1,0 +1,30 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "es6": true,
+        "jest": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["jest", "@typescript-eslint"],
+    "extends": [
+        "airbnb-base",
+        "airbnb-typescript/base",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "variable",
+                "modifiers": ["destructured"],
+                "format": null
+            }
+        ]
+    }
+}
