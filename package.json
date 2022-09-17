@@ -23,6 +23,7 @@
         "@commitlint/config-conventional": "^17.1.0",
         "eslint-config-prettier": "^8.5.0",
         "husky": "^8.0.0",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "typescript": "^4.7.2"
     }
 }
