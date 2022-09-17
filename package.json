@@ -1,0 +1,21 @@
+{
+    "name": "jerome",
+    "version": "0.0.1",
+    "description": "Auto localization for iOS",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "jest",
+        "prepare": "husky install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/florianldt/jerome.git"
+    },
+    "keywords": ["iOS", "localization", "translation", "jerome"],
+    "author": "Florian Ludot",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/florianldt/jerome/issues"
+    },
+    "homepage": "https://github.com/florianldt/jerome#readme",
+}
