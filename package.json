@@ -4,6 +4,8 @@
     "description": "Auto localization for iOS",
     "main": "dist/index.js",
     "scripts": {
+        "prebuild": "rimraf ./dist && node -p \"'export default ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
+        "build": "npm run prebuild && tsc",
         "format": "prettier --write '**/*.ts'",
         "lint": "eslint src/**/*.ts",
         "prepare": "husky install",
