@@ -162,9 +162,7 @@ tags
 [._]*.un~
 
 ### Misc ###
-# lib Folder
-lib
-# PM2 ecosystem
-ecosystem.config.js
+dist
+src/version.ts
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,node,macos
