@@ -1,4 +1,5 @@
 import { Command, Option } from 'commander';
+import chalk from 'chalk';
 
 import { papagoLocals, parseFile, translate, writeFile } from './lib';
 import version from './version';
@@ -44,7 +45,7 @@ async function run() {
         writeFile(target, keyValues, translations, input);
     } catch (e) {
         // eslint-disable-next-line no-console
-        console.error(e);
+        console.log(chalk.red(e));
     }
 }
 
