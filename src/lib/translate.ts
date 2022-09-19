@@ -2,7 +2,7 @@ import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
 import dotenv from 'dotenv';
 import { stringify } from 'qs';
 
-import { KeyValues } from '../types';
+import { KeyValues, PapagoOkResponse } from '../types';
 
 dotenv.config();
 
@@ -41,7 +41,7 @@ function requestsBuilder(
     packets: string[],
     baseLocal: string,
     toLocal: string,
-): Promise<AxiosResponse>[] {
+): Promise<AxiosResponse<PapagoOkResponse>>[] {
     const baseUrl = 'https://openapi.naver.com/v1/papago/n2mt';
     const headers: AxiosRequestHeaders = {
         'X-Naver-Client-Id': process.env.X_NAVER_CLIENT_ID ?? '',
@@ -60,7 +60,9 @@ function requestsBuilder(
             target: toLocal,
             text: packets[i],
         };
-        requests.push(axios.post(baseUrl, stringify(data), { headers }));
+        requests.push(
+            axios.post<PapagoOkResponse>(baseUrl, stringify(data), { headers }),
+        );
     }
 
     return requests;
@@ -77,7 +79,7 @@ async function translate(
     return Promise.all(requests)
         .then((responses) => {
             const translations = responses
-                .map((r) => r.data.message.result.translatedText)
+                .map(({ data }) => data.message.result.translatedText)
                 .join('||');
             return Promise.resolve(translations);
         })

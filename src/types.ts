@@ -3,5 +3,22 @@ type KeyValues = {
     value: string;
 }[];
 
-// eslint-disable-next-line import/prefer-default-export -- More to come
-export type { KeyValues };
+type PapagoMessage = {
+    result: PapagoResult;
+    '@type': string;
+    '@service': string;
+    '@version': string;
+};
+
+type PapagoResult = {
+    srcLangType: string;
+    tarLangType: string;
+    translatedText: string;
+    engineType: string;
+};
+
+type PapagoOkResponse = {
+    message: PapagoMessage;
+};
+
+export type { KeyValues, PapagoMessage, PapagoOkResponse, PapagoResult };
