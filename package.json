@@ -10,7 +10,8 @@
         "lint": "eslint src/**/*.ts",
         "prepare": "husky install",
         "start": "nodemon",
-        "test": "jest"
+        "test": "jest",
+        "test:watch": "jest --watchAll"
     },
     "repository": {
         "type": "git",
