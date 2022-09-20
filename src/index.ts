@@ -85,9 +85,7 @@ async function run() {
             e instanceof FileInvalidExtensionError
         ) {
             testInputSpinner.fail(`Invalid input file: ${input}`);
-        }
-
-        if (e instanceof AxiosError) {
+        } else if (e instanceof AxiosError) {
             translationSpinner.fail(
                 `Failed to translate ${papagoLocals[source]}  to ${papagoLocals[target]}`,
             );
