@@ -1,9 +1,12 @@
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
+import ora from 'ora';
 import { join } from 'path';
 
 import { papagoLocals, parseFile, translate, writeFile } from './lib';
 import version from './version';
+
+import { CLIArgs } from './types';
 
 const program = new Command();
 
@@ -21,14 +24,14 @@ const sourceOption = new Option(
     '-s, --source <local>',
     'the local of the base .strings file',
 )
-    .choices(papagoLocals)
+    .choices(Object.keys(papagoLocals))
     .makeOptionMandatory();
 
 const targetOption = new Option(
     '-t, --target <local>',
     'the local to translate to',
 )
-    .choices(papagoLocals)
+    .choices(Object.keys(papagoLocals))
     .makeOptionMandatory();
 
 program.addOption(inputOption);
@@ -37,7 +40,7 @@ program.addOption(targetOption);
 
 program.parse();
 
-const { input, source, target } = program.opts();
+const { input, source, target } = program.opts<CLIArgs>();
 
 /* eslint-disable no-console */
 async function run() {
@@ -57,17 +60,15 @@ async function run() {
 
         const keyValues = await parseFile(input);
 
+        const spinner = ora(
+            `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+        ).start();
         const translations = await translate(keyValues, source, target);
+        spinner.succeed();
         const filePath = writeFile(target, keyValues, translations, input);
 
-        console.log(
-            chalk.green(
-                `Successfully translated from '${source}' to '${target}' at ${join(
-                    __dirname,
-                    filePath,
-                )}`,
-            ),
-        );
+        console.log();
+        console.log(chalk.green(`🎉 ${join(__dirname, filePath)}`));
     } catch (e) {
         console.log(chalk.bold.red(e));
     }
