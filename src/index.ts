@@ -54,28 +54,28 @@ const { input, source, target } = program.opts<CLIArgs>();
 async function run() {
     renderHeaderLogs(version, input, source, target);
 
-    const testInputSpinner = ora(`Testing input file: ${input}`);
-    const translationSpinner = ora(
-        `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
-    );
-    const writeSpinner = ora(`Writing translation`);
+    const testInputSpinner = ora();
+    const translationSpinner = ora();
+    const writeSpinner = ora();
 
     try {
-        testInputSpinner.start();
+        testInputSpinner.start(`Testing input file: ${input}`);
         testInput(input);
         testInputSpinner.succeed(`Valid input file: ${input}`);
 
         const keyValues = await parseFile(input);
 
-        translationSpinner.start();
+        translationSpinner.start(
+            `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+        );
         const translations = await translate(keyValues, source, target);
         translationSpinner.succeed(
             `Translated ${papagoLocals[source]}  to ${papagoLocals[target]}`,
         );
 
-        writeSpinner.start();
+        writeSpinner.start(`Writing translations`);
         const filePath = writeFile(target, keyValues, translations, input);
-        writeSpinner.succeed(`Translation available at ${filePath}`);
+        writeSpinner.succeed(`Translations available at ${filePath}`);
 
         renderFooterLogs();
         process.exit(0);
