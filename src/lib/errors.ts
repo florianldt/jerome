@@ -1,4 +1,19 @@
 /* eslint-disable max-classes-per-file -- Error subclasses only */
+class ConfigFileNotFoundError extends Error {
+    constructor() {
+        super('Config file not found.');
+    }
+}
+
+class ConfigPropertyNotFoundError extends Error {
+    public configPath: string;
+
+    constructor(property: string, configPath: string) {
+        super(`Property \`${property}\` not found in the config file.`);
+        this.configPath = configPath;
+    }
+}
+
 class FileNotExistError extends Error {
     constructor() {
         super('File does not exist.');
@@ -24,6 +39,8 @@ class PapagoError extends Error {
 }
 
 export {
+    ConfigFileNotFoundError,
+    ConfigPropertyNotFoundError,
     FileInvalidExtensionError,
     FileNotExistError,
     NothingToTranslateError,

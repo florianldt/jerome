@@ -2,10 +2,15 @@ import axios from 'axios';
 
 import { buildTextPackets, requestsBuilder, translate } from './translate';
 
-import { KeyValues } from '../types';
+import { Config, KeyValues } from '../types';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+const dummyConfig: Config = {
+    X_NAVER_CLIENT_ID: '',
+    X_NAVER_CLIENT_SECRET: '',
+};
 
 describe('buildTextPackets', () => {
     test('should return empty array as keyValues is empty', () => {
@@ -52,13 +57,13 @@ describe('buildTextPackets', () => {
 
 describe('requestsBuilder', () => {
     test('should return empty array as packets is empty', () => {
-        expect(requestsBuilder([], 'ko', 'en')).toEqual([]);
+        expect(requestsBuilder(dummyConfig, [], 'ko', 'en')).toEqual([]);
     });
 
     test('should return 3 requests', () => {
-        expect(requestsBuilder(['홈', '홈', '홈'], 'ko', 'en').length).toEqual(
-            3,
-        );
+        expect(
+            requestsBuilder(dummyConfig, ['홈', '홈', '홈'], 'ko', 'en').length,
+        ).toEqual(3);
     });
 });
 
@@ -89,7 +94,9 @@ describe('translate', () => {
             { key: '6788d684', value: '그럼요!' },
         ];
         mockedAxios.post.mockResolvedValue({ data });
-        await expect(translate(keyValues, 'ko', 'en')).resolves.toEqual(
+        await expect(
+            translate(dummyConfig, keyValues, 'ko', 'en'),
+        ).resolves.toEqual(
             'Home\n\nMy Carrot\n\nDoes the Carrot App help you keep alive?\n\nNo.\n\nOf course!',
         );
     });
