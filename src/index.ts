@@ -14,7 +14,11 @@ import {
     translate,
     writeFile,
 } from './lib';
-import { FileInvalidExtensionError, FileNotExistError } from './lib/errors';
+import {
+    FileInvalidExtensionError,
+    FileNotExistError,
+    PapagoError,
+} from './lib/errors';
 import version from './version';
 
 import { CLIArgs } from './types';
@@ -87,7 +91,7 @@ async function main() {
             e instanceof FileInvalidExtensionError
         ) {
             testInputSpinner.fail(`Invalid input file: ${input}`);
-        } else if (e instanceof AxiosError) {
+        } else if (e instanceof PapagoError) {
             translationSpinner.fail(
                 `Failed to translate ${papagoLocals[source]}  to ${papagoLocals[target]}`,
             );

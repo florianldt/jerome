@@ -1,8 +1,9 @@
-import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import dotenv from 'dotenv';
 import { stringify } from 'qs';
 
-import { KeyValues, PapagoOkResponse } from '../types';
+import { KeyValues, PapagoFailureResponse, PapagoOkResponse } from '../types';
+import { PapagoError } from './errors';
 
 dotenv.config();
 
@@ -48,7 +49,7 @@ function requestsBuilder(
         'X-Naver-Client-Secret': process.env.X_NAVER_CLIENT_SECRET ?? '',
     };
 
-    const requests: Promise<AxiosResponse>[] = [];
+    const requests: Promise<AxiosResponse<PapagoOkResponse>>[] = [];
 
     if (!packets.length) {
         return requests;
@@ -83,7 +84,22 @@ async function translate(
                 .join('\n\n');
             return Promise.resolve(translations);
         })
-        .catch((e) => Promise.reject(e));
+        .catch((e) => {
+            if (e instanceof AxiosError) {
+                const papagoFailureResponse =
+                    e as AxiosError<PapagoFailureResponse>;
+
+                if (papagoFailureResponse?.response) {
+                    const papagoError = new PapagoError(
+                        papagoFailureResponse.response.data.errorMessage,
+                    );
+                    return Promise.reject(papagoError);
+                }
+
+                return Promise.reject(e);
+            }
+            return Promise.reject(e);
+        });
 }
 
 export { buildTextPackets, requestsBuilder, translate };
