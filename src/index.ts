@@ -1,5 +1,5 @@
-import { Command, Option } from 'commander';
 import chalk from 'chalk';
+import { Command, Option } from 'commander';
 
 import { papagoLocals, parseFile, translate, writeFile } from './lib';
 import version from './version';
