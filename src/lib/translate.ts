@@ -1,11 +1,13 @@
 import axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from 'axios';
-import dotenv from 'dotenv';
 import { stringify } from 'qs';
 
-import { KeyValues, PapagoFailureResponse, PapagoOkResponse } from '../types';
+import {
+    Config,
+    KeyValues,
+    PapagoFailureResponse,
+    PapagoOkResponse,
+} from '../types';
 import { PapagoError } from './errors';
-
-dotenv.config();
 
 function buildTextPackets(keyValues: KeyValues): string[] {
     const max = 5000;
@@ -39,14 +41,16 @@ function buildTextPackets(keyValues: KeyValues): string[] {
 }
 
 function requestsBuilder(
+    config: Config,
     packets: string[],
     baseLocal: string,
     toLocal: string,
 ): Promise<AxiosResponse<PapagoOkResponse>>[] {
+    const { X_NAVER_CLIENT_ID, X_NAVER_CLIENT_SECRET } = config;
     const baseUrl = 'https://openapi.naver.com/v1/papago/n2mt';
     const headers: AxiosRequestHeaders = {
-        'X-Naver-Client-Id': process.env.X_NAVER_CLIENT_ID ?? '',
-        'X-Naver-Client-Secret': process.env.X_NAVER_CLIENT_SECRET ?? '',
+        'X-Naver-Client-Id': X_NAVER_CLIENT_ID,
+        'X-Naver-Client-Secret': X_NAVER_CLIENT_SECRET,
     };
 
     const requests: Promise<AxiosResponse<PapagoOkResponse>>[] = [];
@@ -70,12 +74,13 @@ function requestsBuilder(
 }
 
 async function translate(
+    config: Config,
     keyValues: KeyValues,
     baseLocal: string,
     toLocals: string,
 ): Promise<string> {
     const packets = buildTextPackets(keyValues);
-    const requests = requestsBuilder(packets, baseLocal, toLocals);
+    const requests = requestsBuilder(config, packets, baseLocal, toLocals);
 
     return Promise.all(requests)
         .then((responses) => {

@@ -4,6 +4,7 @@ import { Command, Option } from 'commander';
 import ora from 'ora';
 
 import {
+    extractConfig,
     papagoLocals,
     parseFile,
     renderErrorLogs,
@@ -14,6 +15,8 @@ import {
     writeFile,
 } from './lib';
 import {
+    ConfigFileNotFoundError,
+    ConfigPropertyNotFoundError,
     FileInvalidExtensionError,
     FileNotExistError,
     PapagoError,
@@ -57,13 +60,15 @@ program.parse();
 const { input, source, target } = program.opts<CLIArgs>();
 
 async function main() {
-    renderHeaderLogs(version, input, source, target);
-
     const testInputSpinner = ora();
     const translationSpinner = ora();
     const writeSpinner = ora();
 
     try {
+        const { config, configPath } = extractConfig();
+
+        renderHeaderLogs(version, configPath, input, source, target);
+
         testInputSpinner.start(`Testing input file: ${input}`);
         testInput(input);
         testInputSpinner.succeed(`Valid input file: ${input}`);
@@ -73,7 +78,7 @@ async function main() {
         translationSpinner.start(
             `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
         );
-        const translations = await translate(keyValues, source, target);
+        const translations = await translate(config, keyValues, source, target);
         translationSpinner.succeed(
             `Translated ${papagoLocals[source]}  to ${papagoLocals[target]}`,
         );
@@ -85,7 +90,11 @@ async function main() {
         renderFooterLogs();
         process.exit(0);
     } catch (e) {
-        if (
+        if (e instanceof ConfigFileNotFoundError) {
+            renderHeaderLogs(version, null, input, source, target);
+        } else if (e instanceof ConfigPropertyNotFoundError) {
+            renderHeaderLogs(version, e.configPath, input, source, target);
+        } else if (
             e instanceof FileNotExistError ||
             e instanceof FileInvalidExtensionError
         ) {

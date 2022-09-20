@@ -5,6 +5,7 @@ import { PapagoLocalKeys } from '../types';
 /* eslint-disable no-console */
 function renderHeaderLogs(
     version: string,
+    configPath: string | null,
     input: string,
     source: PapagoLocalKeys,
     target: PapagoLocalKeys,
@@ -17,6 +18,7 @@ function renderHeaderLogs(
     console.log(`  \\____/ \\___|_|  \\___/|_| |_| |_|\\___| v${version}`);
 
     console.log();
+    console.log(`${chalk.bold('Config:')} ${configPath ?? ''}`);
     console.log(`${chalk.bold('Input:')} ${input}`);
     console.log(`${chalk.bold('Source:')} ${source}`);
     console.log(`${chalk.bold('Target:')} ${target}`);
