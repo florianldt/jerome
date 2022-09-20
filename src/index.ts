@@ -1,7 +1,7 @@
+import { AxiosError } from 'axios';
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import ora from 'ora';
-import { join } from 'path';
 
 import {
     papagoLocals,
@@ -10,6 +10,7 @@ import {
     translate,
     writeFile,
 } from './lib';
+import { FileInvalidExtensionError, FileNotExistError } from './lib/errors';
 import version from './version';
 import { CLIArgs } from './types';
 
@@ -62,27 +63,45 @@ async function run() {
     console.log(`${chalk.bold('Target:')} ${target}`);
     console.log();
 
-    try {
-        testInput(input);
-    } catch (e) {
-        console.log(chalk.bold.red(e));
-        process.exit(1);
-    }
+    const testInputSpinner = ora(`Testing input file: ${input}`);
+    const translationSpinner = ora(
+        `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+    );
+    const writeSpinner = ora(`Writing translation`);
 
     try {
+        testInputSpinner.start();
+        testInput(input);
+        testInputSpinner.succeed(`Valid input file: ${input}`);
+
         const keyValues = await parseFile(input);
 
-        const spinner = ora(
-            `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
-        ).start();
+        translationSpinner.start();
         const translations = await translate(keyValues, source, target);
-        spinner.succeed();
+        translationSpinner.succeed(
+            `Translated ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+        );
+
+        writeSpinner.start();
         const filePath = writeFile(target, keyValues, translations, input);
+        writeSpinner.succeed(`Translation available at ${filePath}`);
+    } catch (e) {
+        if (
+            e instanceof FileNotExistError ||
+            e instanceof FileInvalidExtensionError
+        ) {
+            testInputSpinner.fail(`Invalid input file: ${input}`);
+        }
+
+        if (e instanceof AxiosError) {
+            translationSpinner.fail(
+                `Failed to translate ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+            );
+        }
 
         console.log();
-        console.log(chalk.green(`🎉 ${join(__dirname, filePath)}`));
-    } catch (e) {
-        console.log(chalk.bold.red(e));
+        console.log(chalk.bold.red(e instanceof Error ? e.message : e));
+        process.exit(1);
     }
 }
 
