@@ -14,6 +14,7 @@ import {
 } from './lib';
 import { FileInvalidExtensionError, FileNotExistError } from './lib/errors';
 import version from './version';
+
 import { CLIArgs } from './types';
 
 const program = new Command();
