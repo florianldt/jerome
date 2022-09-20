@@ -1,17 +1,20 @@
 import { AxiosError } from 'axios';
-import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import ora from 'ora';
 
 import {
     papagoLocals,
     parseFile,
+    renderErrorLogs,
+    renderFooterLogs,
+    renderHeaderLogs,
     testInput,
     translate,
     writeFile,
 } from './lib';
 import { FileInvalidExtensionError, FileNotExistError } from './lib/errors';
 import version from './version';
+
 import { CLIArgs } from './types';
 
 const program = new Command();
@@ -48,61 +51,50 @@ program.parse();
 
 const { input, source, target } = program.opts<CLIArgs>();
 
-/* eslint-disable no-console */
-async function run() {
-    console.log('       _                               ');
-    console.log('      | |                              ');
-    console.log('      | | ___ _ __ ___  _ __ ___   ___ ');
-    console.log("  _   | |/ _ \\ '__/ _ \\| '_ ` _ \\ / _ \\");
-    console.log(' | |__| |  __/ | | (_) | | | | | |  __/');
-    console.log(`  \\____/ \\___|_|  \\___/|_| |_| |_|\\___| v${version}`);
+async function main() {
+    renderHeaderLogs(version, input, source, target);
 
-    console.log();
-    console.log(`${chalk.bold('Input:')} ${input}`);
-    console.log(`${chalk.bold('Source:')} ${source}`);
-    console.log(`${chalk.bold('Target:')} ${target}`);
-    console.log();
-
-    const testInputSpinner = ora(`Testing input file: ${input}`);
-    const translationSpinner = ora(
-        `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
-    );
-    const writeSpinner = ora(`Writing translation`);
+    const testInputSpinner = ora();
+    const translationSpinner = ora();
+    const writeSpinner = ora();
 
     try {
-        testInputSpinner.start();
+        testInputSpinner.start(`Testing input file: ${input}`);
         testInput(input);
         testInputSpinner.succeed(`Valid input file: ${input}`);
 
         const keyValues = await parseFile(input);
 
-        translationSpinner.start();
+        translationSpinner.start(
+            `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
+        );
         const translations = await translate(keyValues, source, target);
         translationSpinner.succeed(
             `Translated ${papagoLocals[source]}  to ${papagoLocals[target]}`,
         );
 
-        writeSpinner.start();
+        writeSpinner.start(`Writing translations`);
         const filePath = writeFile(target, keyValues, translations, input);
-        writeSpinner.succeed(`Translation available at ${filePath}`);
+        writeSpinner.succeed(`Translations available at ${filePath}`);
+
+        renderFooterLogs();
+        process.exit(0);
     } catch (e) {
         if (
             e instanceof FileNotExistError ||
             e instanceof FileInvalidExtensionError
         ) {
             testInputSpinner.fail(`Invalid input file: ${input}`);
-        }
-
-        if (e instanceof AxiosError) {
+        } else if (e instanceof AxiosError) {
             translationSpinner.fail(
                 `Failed to translate ${papagoLocals[source]}  to ${papagoLocals[target]}`,
             );
         }
 
-        console.log();
-        console.log(chalk.bold.red(e instanceof Error ? e.message : e));
+        renderErrorLogs(e);
+        renderFooterLogs();
         process.exit(1);
     }
 }
 
-run();
+main();
