@@ -168,5 +168,6 @@ examples/
 !examples/Localizable-empty.strings
 !examples/Localizable.badExt
 !examples/Localizable.strings
+.jeromerc.json
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,node,macos
