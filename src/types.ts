@@ -1,7 +1,17 @@
+import papagoLocals from './lib/papagoLocals';
+
+type CLIArgs = {
+    input: string;
+    source: PapagoLocalKeys;
+    target: PapagoLocalKeys;
+};
+
 type KeyValues = {
     key: string;
     value: string;
 }[];
+
+type PapagoLocalKeys = keyof typeof papagoLocals;
 
 type PapagoMessage = {
     result: PapagoResult;
@@ -21,4 +31,11 @@ type PapagoOkResponse = {
     message: PapagoMessage;
 };
 
-export type { KeyValues, PapagoMessage, PapagoOkResponse, PapagoResult };
+export type {
+    CLIArgs,
+    KeyValues,
+    PapagoLocalKeys,
+    PapagoMessage,
+    PapagoOkResponse,
+    PapagoResult,
+};
