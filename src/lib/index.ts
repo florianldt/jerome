@@ -1,3 +1,4 @@
+import extractConfig from './extractConfig';
 import extractKeyValues from './extractKeyValues';
 import extractText from './extractText';
 import hasValidExtension from './hasValidExtension';
@@ -9,6 +10,7 @@ import { translate } from './translate';
 import writeFile from './writeFile';
 
 export {
+    extractConfig,
     extractKeyValues,
     extractText,
     hasValidExtension,
