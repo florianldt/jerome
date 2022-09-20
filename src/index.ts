@@ -51,7 +51,7 @@ program.parse();
 
 const { input, source, target } = program.opts<CLIArgs>();
 
-async function run() {
+async function main() {
     renderHeaderLogs(version, input, source, target);
 
     const testInputSpinner = ora();
@@ -97,4 +97,4 @@ async function run() {
     }
 }
 
-run();
+main();
