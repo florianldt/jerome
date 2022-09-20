@@ -6,6 +6,11 @@ type CLIArgs = {
     target: PapagoLocalKeys;
 };
 
+type Config = {
+    X_NAVER_CLIENT_ID: string;
+    X_NAVER_CLIENT_SECRET: string;
+};
+
 type KeyValues = {
     key: string;
     value: string;
@@ -38,6 +43,7 @@ type PapagoFailureResponse = {
 
 export type {
     CLIArgs,
+    Config,
     KeyValues,
     PapagoFailureResponse,
     PapagoLocalKeys,
