@@ -21,7 +21,7 @@ describe('buildTextPackets', () => {
             { key: '6788d684', value: '그럼요!' },
         ];
         const result = [
-            `${keyValues[0].value}||${keyValues[1].value}||${keyValues[2].value}||${keyValues[3].value}||${keyValues[4].value}`,
+            `${keyValues[0].value}\n\n${keyValues[1].value}\n\n${keyValues[2].value}\n\n${keyValues[3].value}\n\n${keyValues[4].value}`,
         ];
         expect(buildTextPackets(keyValues)).toEqual(result);
     });
@@ -31,7 +31,7 @@ describe('buildTextPackets', () => {
             { key: '8bccc18f', value: '홈' },
             { key: 'f0cc8352', value: '홈'.repeat(4997) },
         ];
-        const result = [`${keyValues[0].value}||${keyValues[1].value}`];
+        const result = [`${keyValues[0].value}\n\n${keyValues[1].value}`];
         expect(buildTextPackets(keyValues)).toEqual(result);
     });
 
@@ -69,7 +69,7 @@ describe('translate', () => {
                 srcLangType: 'en',
                 tarLangType: 'ko',
                 translatedText:
-                    'Home||My Carrot||Does the Carrot App help you keep alive?||No||Of course!',
+                    'Home\n\nMy Carrot\n\nDoes the Carrot App help you keep alive?\n\nNo.\n\nOf course!',
                 engineType: 'PRETRANS',
                 pivot: null,
                 dict: null,
@@ -90,7 +90,7 @@ describe('translate', () => {
         ];
         mockedAxios.post.mockResolvedValue({ data });
         await expect(translate(keyValues, 'ko', 'en')).resolves.toEqual(
-            'Home||My Carrot||Does the Carrot App help you keep alive?||No||Of course!',
+            'Home\n\nMy Carrot\n\nDoes the Carrot App help you keep alive?\n\nNo.\n\nOf course!',
         );
     });
 });
