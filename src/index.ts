@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { AxiosError } from 'axios';
 import { Command, Option } from 'commander';
 import ora from 'ora';
 
