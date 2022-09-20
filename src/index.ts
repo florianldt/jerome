@@ -1,11 +1,13 @@
 import { AxiosError } from 'axios';
-import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import ora from 'ora';
 
 import {
     papagoLocals,
     parseFile,
+    renderErrorLogs,
+    renderFooterLogs,
+    renderHeaderLogs,
     testInput,
     translate,
     writeFile,
@@ -48,20 +50,8 @@ program.parse();
 
 const { input, source, target } = program.opts<CLIArgs>();
 
-/* eslint-disable no-console */
 async function run() {
-    console.log('       _                               ');
-    console.log('      | |                              ');
-    console.log('      | | ___ _ __ ___  _ __ ___   ___ ');
-    console.log("  _   | |/ _ \\ '__/ _ \\| '_ ` _ \\ / _ \\");
-    console.log(' | |__| |  __/ | | (_) | | | | | |  __/');
-    console.log(`  \\____/ \\___|_|  \\___/|_| |_| |_|\\___| v${version}`);
-
-    console.log();
-    console.log(`${chalk.bold('Input:')} ${input}`);
-    console.log(`${chalk.bold('Source:')} ${source}`);
-    console.log(`${chalk.bold('Target:')} ${target}`);
-    console.log();
+    renderHeaderLogs(version, input, source, target);
 
     const testInputSpinner = ora(`Testing input file: ${input}`);
     const translationSpinner = ora(
@@ -85,6 +75,8 @@ async function run() {
         writeSpinner.start();
         const filePath = writeFile(target, keyValues, translations, input);
         writeSpinner.succeed(`Translation available at ${filePath}`);
+
+        renderFooterLogs();
     } catch (e) {
         if (
             e instanceof FileNotExistError ||
@@ -99,8 +91,8 @@ async function run() {
             );
         }
 
-        console.log();
-        console.log(chalk.bold.red(e instanceof Error ? e.message : e));
+        renderErrorLogs(e);
+        renderFooterLogs();
         process.exit(1);
     }
 }

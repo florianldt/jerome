@@ -1,6 +1,7 @@
 import extractKeyValues from './extractKeyValues';
 import extractText from './extractText';
 import hasValidExtension from './hasValidExtension';
+import { renderErrorLogs, renderFooterLogs, renderHeaderLogs } from './logging';
 import papagoLocals from './papagoLocals';
 import parseFile from './parseFile';
 import testInput from './testInput';
@@ -13,6 +14,9 @@ export {
     hasValidExtension,
     papagoLocals,
     parseFile,
+    renderErrorLogs,
+    renderFooterLogs,
+    renderHeaderLogs,
     testInput,
     translate,
     writeFile,
