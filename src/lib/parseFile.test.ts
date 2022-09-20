@@ -5,20 +5,6 @@ import parseFile from './parseFile';
 import { KeyValues } from '../types';
 
 describe('parseFile', () => {
-    test('should throw File does not exist error', async () => {
-        await expect(
-            parseFile(
-                join(__dirname, '../../examples/Localizable-wrong.strings'),
-            ),
-        ).rejects.toThrowError('File does not exist.');
-    });
-
-    test('should throw File does not have a valid extention name error', async () => {
-        await expect(
-            parseFile(join(__dirname, '../../examples/Localizable.badExt')),
-        ).rejects.toThrowError('File does not have a valid extension name.');
-    });
-
     test('should throw Nothing to translate error', async () => {
         await expect(
             parseFile(
