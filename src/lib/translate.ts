@@ -23,7 +23,7 @@ function buildTextPackets(keyValues: KeyValues): string[] {
         if (!currentString.length) {
             currentString = value;
         } else if (currentString.length + charCount + 2 <= max) {
-            currentString += `||${keyValues[i].value}`;
+            currentString += `\n\n${keyValues[i].value}`;
         } else {
             packets.push(currentString);
             currentString = keyValues[i].value;
@@ -80,7 +80,7 @@ async function translate(
         .then((responses) => {
             const translations = responses
                 .map(({ data }) => data.message.result.translatedText)
-                .join('||');
+                .join('\n\n');
             return Promise.resolve(translations);
         })
         .catch((e) => Promise.reject(e));

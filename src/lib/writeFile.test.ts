@@ -29,7 +29,7 @@ describe('writeFile', () => {
             { key: '6788d684', value: '그럼요!' },
         ];
         const translations =
-            'Home||My Carrot||Does the Carrot App help you keep alive?||No||Of course!';
+            'Home\n\nMy Carrot\n\nDoes the Carrot App help you keep alive?\n\nNo.\n\nOf course!';
         const path = join(__dirname, '../../examples/Localizable.strings');
 
         writeFile('en', keyValues, translations, path);

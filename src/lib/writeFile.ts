@@ -19,7 +19,7 @@ function writeFile(
 `;
 
     let content = header;
-    const translationsArray = translations.split('||');
+    const translationsArray = translations.split('\n\n');
 
     for (let i = 0; i < keyValues.length; i += 1) {
         const { key } = keyValues[i];
