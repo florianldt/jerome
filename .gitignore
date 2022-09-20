@@ -164,6 +164,9 @@ tags
 ### Misc ###
 dist
 src/version.ts
-examples/Localizable-en.strings
+examples/
+!examples/Localizable-empty.strings
+!examples/Localizable.badExt
+!examples/Localizable.strings
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,node,macos
