@@ -9,7 +9,7 @@ function writeFile(
     keyValues: KeyValues,
     translations: string,
     path: string,
-): void {
+): string {
     const header = `/* 
   Localizable-${local}.strings
 
@@ -30,6 +30,8 @@ function writeFile(
     const filePath = getFilePath(local, path);
 
     writeFileSync(filePath, content);
+
+    return filePath;
 }
 
 export default writeFile;
