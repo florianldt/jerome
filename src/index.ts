@@ -78,6 +78,7 @@ async function run() {
         writeSpinner.succeed(`Translation available at ${filePath}`);
 
         renderFooterLogs();
+        process.exit(0);
     } catch (e) {
         if (
             e instanceof FileNotExistError ||
