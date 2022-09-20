@@ -3,9 +3,14 @@ import { Command, Option } from 'commander';
 import ora from 'ora';
 import { join } from 'path';
 
-import { papagoLocals, parseFile, translate, writeFile } from './lib';
+import {
+    papagoLocals,
+    parseFile,
+    testInput,
+    translate,
+    writeFile,
+} from './lib';
 import version from './version';
-
 import { CLIArgs } from './types';
 
 const program = new Command();
@@ -44,20 +49,27 @@ const { input, source, target } = program.opts<CLIArgs>();
 
 /* eslint-disable no-console */
 async function run() {
+    console.log('       _                               ');
+    console.log('      | |                              ');
+    console.log('      | | ___ _ __ ___  _ __ ___   ___ ');
+    console.log("  _   | |/ _ \\ '__/ _ \\| '_ ` _ \\ / _ \\");
+    console.log(' | |__| |  __/ | | (_) | | | | | |  __/');
+    console.log(`  \\____/ \\___|_|  \\___/|_| |_| |_|\\___| v${version}`);
+
+    console.log();
+    console.log(`${chalk.bold('Input:')} ${input}`);
+    console.log(`${chalk.bold('Source:')} ${source}`);
+    console.log(`${chalk.bold('Target:')} ${target}`);
+    console.log();
+
     try {
-        console.log('       _                               ');
-        console.log('      | |                              ');
-        console.log('      | | ___ _ __ ___  _ __ ___   ___ ');
-        console.log("  _   | |/ _ \\ '__/ _ \\| '_ ` _ \\ / _ \\");
-        console.log(' | |__| |  __/ | | (_) | | | | | |  __/');
-        console.log(`  \\____/ \\___|_|  \\___/|_| |_| |_|\\___| v${version}`);
+        testInput(input);
+    } catch (e) {
+        console.log(chalk.bold.red(e));
+        process.exit(1);
+    }
 
-        console.log();
-        console.log(`${chalk.bold('Input:')} ${input}`);
-        console.log(`${chalk.bold('Source:')} ${source}`);
-        console.log(`${chalk.bold('Target:')} ${target}`);
-        console.log();
-
+    try {
         const keyValues = await parseFile(input);
 
         const spinner = ora(
