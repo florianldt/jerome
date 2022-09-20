@@ -31,9 +31,15 @@ type PapagoOkResponse = {
     message: PapagoMessage;
 };
 
+type PapagoFailureResponse = {
+    errorMessage: string;
+    errorCode: string;
+};
+
 export type {
     CLIArgs,
     KeyValues,
+    PapagoFailureResponse,
     PapagoLocalKeys,
     PapagoMessage,
     PapagoOkResponse,

@@ -17,8 +17,15 @@ class NothingToTranslateError extends Error {
     }
 }
 
+class PapagoError extends Error {
+    constructor(message: string) {
+        super(`PapagoError: ${message}`);
+    }
+}
+
 export {
     FileInvalidExtensionError,
     FileNotExistError,
     NothingToTranslateError,
+    PapagoError,
 };
