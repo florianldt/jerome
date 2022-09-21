@@ -5,7 +5,7 @@
     "scripts": {
         "all": "npm audit && npm run prebuild && npm run build && npm run lint && npm test",
         "prebuild": "rimraf ./dist && node -p \"'export default ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
-        "build": "npm run prebuild && tsc",
+        "build": "tsc",
         "format": "prettier --write '**/*.ts'",
         "lint": "eslint .",
         "prepare": "husky install",
