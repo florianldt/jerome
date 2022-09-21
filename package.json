@@ -1,7 +1,11 @@
 {
-    "name": "jerome",
+    "name": "@florianldt/jerome",
     "version": "0.0.1",
     "description": "Auto localization for iOS",
+    "main": "./dist/index.js",
+    "bin": {
+        "jerome": "./dist/index.js"
+    },
     "scripts": {
         "all": "npm audit && npm run prebuild && npm run build && npm run lint && npm test",
         "prebuild": "rimraf ./dist && node -p \"'export default ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
@@ -17,7 +21,7 @@
         "type": "git",
         "url": "git+https://github.com/florianldt/jerome.git"
     },
-    "keywords": ["iOS", "localization", "translation", "jerome"],
+    "keywords": ["iOS", "localization", "translation", "jerome", "cli"],
     "author": "Florian Ludot",
     "license": "ISC",
     "bugs": {
