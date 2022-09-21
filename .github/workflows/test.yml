@@ -17,7 +17,6 @@ jobs:
       - name: 'Slack Notification'
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: ci-cd
           SLACK_COLOR: ${{ job.status }}
           SLACK_ICON: https://raw.githubusercontent.com/florianldt/jerome/master/media/slack-icon.jpg
           SLACK_USERNAME: Alf
