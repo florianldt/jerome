@@ -1,0 +1,39 @@
+name: 'publish'
+on:
+  release:
+    types: [created]
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: 'Install dependencies, audit, build, lint and test'
+        run: |
+          npm ci --ignore-scripts
+          npm run all
+      - name: 'Publish package on NPM'
+        run: |
+          npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: 'Get message'
+        id: 'deploy-message'
+        run: |
+          echo "::set-output name=commit_msg::$(git log -1 --format=%B)"
+          echo "::set-output name=commit_sha::$(git log -1 --format=%H)"
+      - name: 'Slack Notification'
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://raw.githubusercontent.com/florianldt/jerome/master/media/slack-icon.jpg
+          SLACK_USERNAME: Alf
+          SLACK_MESSAGE: ${{ steps.deploy-message.outputs.commit_msg }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
