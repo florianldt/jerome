@@ -28,7 +28,7 @@ import { CLIArgs } from './types';
 const program = new Command();
 
 program
-    .name('Jerome')
+    .name('jerome')
     .description('Auto localization for iOS.')
     .version(version, '-v, --version');
 

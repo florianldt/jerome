@@ -1,14 +1,12 @@
-name: 'test'
+name: 'publish'
 on:
-  pull_request:
-  push:
-    branches:
-      - master
+  release:
+    types: [created]
 
   workflow_dispatch:
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,10 +14,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
       - name: 'Install dependencies, audit, build, lint and test'
         run: |
           npm ci --ignore-scripts
           npm run all
+      - name: 'Publish package on NPM'
+        run: |
+          npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: 'Get message'
         id: 'deploy-message'
         run: |
