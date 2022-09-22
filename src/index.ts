@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Command, Option } from 'commander';
+import { Command, CommanderError, Option } from 'commander';
 import ora from 'ora';
 
 import {
@@ -55,7 +55,34 @@ program.addOption(inputOption);
 program.addOption(sourceOption);
 program.addOption(targetOption);
 
-program.parse();
+program.addHelpText(
+    'after',
+    `
+Example calls:
+  $ jerome --input ~/Localizable.strings --source ko --target en
+  $ jerome -i ~/Localizable.strings -s ko -t en
+  $ jerome --help
+  $ jerome --version
+`,
+);
+
+program.exitOverride();
+
+try {
+    program.parse();
+} catch (e) {
+    if (
+        e instanceof CommanderError &&
+        e.code === 'commander.missingMandatoryOptionValue'
+    ) {
+        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
+        console.log();
+        program.outputHelp();
+    }
+
+    process.exit(1);
+}
 
 const { input, source, target } = program.opts<CLIArgs>();
 
