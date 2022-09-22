@@ -69,8 +69,7 @@ Example calls:
 
 ## Example
 
-![Example](./media/example.png)
-![Example](https://raw.githubusercontent.com/florianldt/jerome/master/media/exemple.png)
+![Example](https://raw.githubusercontent.com/florianldt/jerome/master/media/example.png)
 
 ## Caveats
 
