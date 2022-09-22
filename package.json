@@ -1,6 +1,6 @@
 {
     "name": "@florianldt/jerome",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Auto localization for iOS",
     "main": "./dist/index.js",
     "bin": {
