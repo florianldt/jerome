@@ -29,16 +29,11 @@ jobs:
         uses: technote-space/workflow-conclusion-action@v2
       - name: 'Inject slug/short variables'
         uses: rlespinasse/github-slug-action@v3.x
-      - name: 'Get message'
-        id: 'deploy-message'
-        run: |
-          echo "::set-output name=commit_msg::$(git log -1 --format=%B)"
-          echo "::set-output name=commit_sha::$(git log -1 --format=%H)"
       - name: 'Slack Notification'
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_COLOR: ${{ env.WORKFLOW_CONCLUSION }}
           SLACK_ICON: https://raw.githubusercontent.com/florianldt/jerome/master/media/slack-icon.jpg
           SLACK_USERNAME: Alf
-          SLACK_MESSAGE: ${{ steps.deploy-message.outputs.commit_msg }}
+          SLACK_MESSAGE: ${{ github.event.head_commit.message }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
