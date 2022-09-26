@@ -35,4 +35,4 @@ function extractConfig(): Result {
     return { config: config.config, configPath: config.filepath };
 }
 
-export { extractConfig };
+export default extractConfig;
