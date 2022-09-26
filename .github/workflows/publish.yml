@@ -24,6 +24,14 @@ jobs:
           npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  notify:
+    needs: publish
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Get conclusion via env.WORKFLOW_CONCLUSION'
+        uses: technote-space/workflow-conclusion-action@v2
       - name: 'Get message'
         id: 'deploy-message'
         run: |
@@ -32,7 +40,7 @@ jobs:
       - name: 'Slack Notification'
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_COLOR: ${{ job.status }}
+          SLACK_COLOR: ${{ env.WORKFLOW_CONCLUSION }}
           SLACK_ICON: https://raw.githubusercontent.com/florianldt/jerome/master/media/slack-icon.jpg
           SLACK_USERNAME: Alf
           SLACK_MESSAGE: ${{ steps.deploy-message.outputs.commit_msg }}
