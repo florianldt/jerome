@@ -37,7 +37,7 @@ jobs:
       - name: 'Slack Notification'
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_COLOR: ${{ workflow.status }}
+          SLACK_COLOR: ${{ env.WORKFLOW_CONCLUSION }}
           SLACK_ICON: https://raw.githubusercontent.com/florianldt/jerome/master/media/slack-icon.jpg
           SLACK_USERNAME: Alf
           SLACK_MESSAGE: ${{ steps.deploy-message.outputs.commit_msg }}
