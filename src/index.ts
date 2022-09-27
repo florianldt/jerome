@@ -2,6 +2,7 @@
 
 import { Command, CommanderError, Option } from 'commander';
 import ora from 'ora';
+import { resolve } from 'path';
 
 import {
     extractConfig,
@@ -98,18 +99,27 @@ async function main() {
     const translationSpinner = ora();
     const writeSpinner = ora();
 
+    const resolvedInput = resolve(input);
+
     try {
         const { config, configPath } = extractConfig();
 
-        renderHeaderLogs(version, configPath, input, output, source, target);
+        renderHeaderLogs(
+            version,
+            configPath,
+            resolvedInput,
+            output,
+            source,
+            target,
+        );
 
         testOutput(output);
 
-        testInputSpinner.start(`Testing input file: ${input}`);
+        testInputSpinner.start(`Testing input file: ${resolvedInput}`);
         testInput(input);
-        testInputSpinner.succeed(`Valid input file: ${input}`);
+        testInputSpinner.succeed(`Valid input file: ${resolvedInput}`);
 
-        const keyValues = await parseFile(input);
+        const keyValues = await parseFile(resolvedInput);
 
         translationSpinner.start(
             `Translating ${papagoLocals[source]}  to ${papagoLocals[target]}`,
@@ -124,7 +134,7 @@ async function main() {
             target,
             keyValues,
             translations,
-            input,
+            resolvedInput,
             output,
         );
         writeSpinner.succeed(`Translations available at ${filePath}`);
@@ -133,12 +143,19 @@ async function main() {
         process.exit(0);
     } catch (e) {
         if (e instanceof ConfigFileNotFoundError) {
-            renderHeaderLogs(version, null, input, undefined, source, target);
+            renderHeaderLogs(
+                version,
+                null,
+                resolvedInput,
+                undefined,
+                source,
+                target,
+            );
         } else if (e instanceof ConfigPropertyNotFoundError) {
             renderHeaderLogs(
                 version,
                 e.configPath,
-                input,
+                resolvedInput,
                 undefined,
                 source,
                 target,
@@ -147,7 +164,7 @@ async function main() {
             e instanceof FileNotExistError ||
             e instanceof FileInvalidExtensionError
         ) {
-            testInputSpinner.fail(`Invalid input file: ${input}`);
+            testInputSpinner.fail(`Invalid input file: ${resolvedInput}`);
         } else if (e instanceof PapagoError) {
             translationSpinner.fail(
                 `Failed to translate ${papagoLocals[source]}  to ${papagoLocals[target]}`,

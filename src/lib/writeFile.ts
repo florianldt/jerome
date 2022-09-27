@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs';
+import { resolve } from 'path';
 
 import getFilePath from './getFilePath';
 
@@ -28,7 +29,7 @@ function writeFile(
         content += `"${key}" = "${value}";\n`;
     }
 
-    const filePath = getFilePath(local, path, output);
+    const filePath = resolve(getFilePath(local, path, output));
 
     writeFileSync(filePath, content);
 
