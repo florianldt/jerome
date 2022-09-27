@@ -58,6 +58,7 @@ Options:
   -i, --input <path>    the base .strings file to translate
   -s, --source <local>  the local of the base .strings file (choices: "ko", "en", "zh-CN", "zh-TW", "es", "fr", "vi", "th", "id")
   -t, --target <local>  the local to translate to (choices: "ko", "en", "zh-CN", "zh-TW", "es", "fr", "vi", "th", "id")
+  -o, --output <path>   the directory to output the translated file
   -h, --help            display help for command
 
 Example calls:
