@@ -6,6 +6,7 @@ import { renderErrorLogs, renderFooterLogs, renderHeaderLogs } from './logging';
 import papagoLocals from './papagoLocals';
 import parseFile from './parseFile';
 import testInput from './testInput';
+import testOutput from './testOutput';
 import { translate } from './translate';
 import writeFile from './writeFile';
 
@@ -20,6 +21,7 @@ export {
     renderFooterLogs,
     renderHeaderLogs,
     testInput,
+    testOutput,
     translate,
     writeFile,
 };
