@@ -1,6 +1,6 @@
 {
     "name": "@florianldt/jerome",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Auto localization for iOS",
     "main": "./dist/index.js",
     "bin": {
@@ -21,7 +21,13 @@
         "type": "git",
         "url": "git+https://github.com/florianldt/jerome.git"
     },
-    "keywords": ["iOS", "localization", "translation", "jerome", "cli"],
+    "keywords": [
+        "iOS",
+        "localization",
+        "translation",
+        "jerome",
+        "cli"
+    ],
     "author": "Florian Ludot",
     "license": "ISC",
     "bugs": {
