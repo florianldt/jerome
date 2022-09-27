@@ -26,6 +26,12 @@ class FileInvalidExtensionError extends Error {
     }
 }
 
+class InvalidDirectoryError extends Error {
+    constructor(path: string) {
+        super(`Invalid directory ${path}`);
+    }
+}
+
 class NothingToTranslateError extends Error {
     constructor() {
         super('Nothing to translate.');
@@ -43,6 +49,7 @@ export {
     ConfigPropertyNotFoundError,
     FileInvalidExtensionError,
     FileNotExistError,
+    InvalidDirectoryError,
     NothingToTranslateError,
     PapagoError,
 };
