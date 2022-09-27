@@ -21,13 +21,7 @@
         "type": "git",
         "url": "git+https://github.com/florianldt/jerome.git"
     },
-    "keywords": [
-        "iOS",
-        "localization",
-        "translation",
-        "jerome",
-        "cli"
-    ],
+    "keywords": ["iOS", "localization", "translation", "jerome", "cli"],
     "author": "Florian Ludot",
     "license": "ISC",
     "bugs": {
