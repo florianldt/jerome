@@ -11,6 +11,7 @@ import {
     renderFooterLogs,
     renderHeaderLogs,
     testInput,
+    testOutput,
     translate,
     writeFile,
 } from './lib';
@@ -51,9 +52,15 @@ const targetOption = new Option(
     .choices(Object.keys(papagoLocals))
     .makeOptionMandatory();
 
+const outputOption = new Option(
+    '-o, --output <path>',
+    'the directory to output the translated file',
+);
+
 program.addOption(inputOption);
 program.addOption(sourceOption);
 program.addOption(targetOption);
+program.addOption(outputOption);
 
 program.addHelpText(
     'after',
@@ -61,6 +68,7 @@ program.addHelpText(
 Example calls:
   $ jerome --input ~/Localizable.strings --source ko --target en
   $ jerome -i ~/Localizable.strings -s ko -t en
+  $ jerome -i ~/Localizable.strings -s ko -t en -o ~/Desktop/Localizable-en.strings
   $ jerome --help
   $ jerome --version
 `,
@@ -76,7 +84,6 @@ try {
         e.code === 'commander.missingMandatoryOptionValue'
     ) {
         // eslint-disable-next-line no-console
-        // eslint-disable-next-line no-console
         console.log();
         program.outputHelp();
     }
@@ -84,7 +91,7 @@ try {
     process.exit(1);
 }
 
-const { input, source, target } = program.opts<CLIArgs>();
+const { input, output, source, target } = program.opts<CLIArgs>();
 
 async function main() {
     const testInputSpinner = ora();
@@ -94,7 +101,9 @@ async function main() {
     try {
         const { config, configPath } = extractConfig();
 
-        renderHeaderLogs(version, configPath, input, source, target);
+        renderHeaderLogs(version, configPath, input, output, source, target);
+
+        testOutput(output);
 
         testInputSpinner.start(`Testing input file: ${input}`);
         testInput(input);
@@ -111,16 +120,29 @@ async function main() {
         );
 
         writeSpinner.start(`Writing translations`);
-        const filePath = writeFile(target, keyValues, translations, input);
+        const filePath = writeFile(
+            target,
+            keyValues,
+            translations,
+            input,
+            output,
+        );
         writeSpinner.succeed(`Translations available at ${filePath}`);
 
         renderFooterLogs();
         process.exit(0);
     } catch (e) {
         if (e instanceof ConfigFileNotFoundError) {
-            renderHeaderLogs(version, null, input, source, target);
+            renderHeaderLogs(version, null, input, undefined, source, target);
         } else if (e instanceof ConfigPropertyNotFoundError) {
-            renderHeaderLogs(version, e.configPath, input, source, target);
+            renderHeaderLogs(
+                version,
+                e.configPath,
+                input,
+                undefined,
+                source,
+                target,
+            );
         } else if (
             e instanceof FileNotExistError ||
             e instanceof FileInvalidExtensionError

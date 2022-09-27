@@ -1,8 +1,12 @@
 import { parse } from 'path';
 
-function getFilePath(local: string, basePath: string): string {
+function getFilePath(
+    local: string,
+    basePath: string,
+    output: string | undefined,
+): string {
     const { dir, ext, name } = parse(basePath);
-    return `${dir}/${name}-${local}${ext}`;
+    return `${output || dir}/${name}-${local}${ext}`;
 }
 
 export default getFilePath;
