@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { resolve } from 'path';
 
 import { PapagoLocalKeys } from '../types';
 
@@ -20,8 +21,8 @@ function renderHeaderLogs(
 
     console.log();
     console.log(`${chalk.bold('Config:')} ${configPath ?? ''}`);
-    console.log(`${chalk.bold('Input:')} ${input}`);
-    console.log(`${chalk.bold('Output:')} ${output ?? '--'}`);
+    console.log(`${chalk.bold('Input:')}  ${input}`);
+    console.log(`${chalk.bold('Output:')} ${output ? resolve(output) : '--'}`);
     console.log(`${chalk.bold('Source:')} ${source}`);
     console.log(`${chalk.bold('Target:')} ${target}`);
     console.log();
