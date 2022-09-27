@@ -85,7 +85,7 @@ To improve translation speed, expressions are bundled together by sets of up to 
 
 -   [ ] Add an optional flag to specify the location of the `.jeromerc` file
 
--   [ ] Add an optional flag to specify the output location
+-   [X] Add an optional flag to specify the output location
 
 -   [ ] Enable auto-translation for android and more... 
 
