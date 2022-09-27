@@ -7,6 +7,7 @@ function renderHeaderLogs(
     version: string,
     configPath: string | null,
     input: string,
+    output: string | undefined,
     source: PapagoLocalKeys,
     target: PapagoLocalKeys,
 ): void {
@@ -20,6 +21,7 @@ function renderHeaderLogs(
     console.log();
     console.log(`${chalk.bold('Config:')} ${configPath ?? ''}`);
     console.log(`${chalk.bold('Input:')} ${input}`);
+    console.log(`${chalk.bold('Output:')} ${output ?? '--'}`);
     console.log(`${chalk.bold('Source:')} ${source}`);
     console.log(`${chalk.bold('Target:')} ${target}`);
     console.log();

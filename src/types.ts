@@ -2,6 +2,7 @@ import papagoLocals from './lib/papagoLocals';
 
 type CLIArgs = {
     input: string;
+    output?: string;
     source: PapagoLocalKeys;
     target: PapagoLocalKeys;
 };
