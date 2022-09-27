@@ -83,8 +83,6 @@ To improve translation speed, expressions are bundled together by sets of up to 
 
 -   [ ] Add the possibility to translate multiple languages at the same time. ex: `--source ko --target en,fr`
 
--   [ ] Add an optional flag to specify the location of the `.jeromerc` file
-
 -   [X] Add an optional flag to specify the output location
 
 -   [ ] Enable auto-translation for android and more... 
